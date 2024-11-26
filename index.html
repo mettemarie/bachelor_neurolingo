@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neurolingo</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="loader-overlay" style="display: none">
+      <div class="loader-content">
+        <img src="img/logo.svg" alt="Neurolingo Logo" width="80" height="80" />
+        <p class="loader-text translate-me">Translating...</p>
+        <div class="progress-container">
+          <div class="progress-bar"></div>
+        </div>
+        <p class="loader-subtext translate-me">
+          Please have patience. This is a prototype and therefore slow.
+        </p>
+      </div>
+    </div>
+
+    <div class="app">
+      <nav class="navbar">
+        <div>
+          <img
+            src="img/logo.svg"
+            alt="Neurolingo Logo"
+            width="80"
+            height="80"
+            class="logo"
+          />
+        </div>
+        <div class="navbarRight">
+          <div class="navlinks">
+            <a href="#features" class="translate-me">Features</a>
+            <a href="#about" class="translate-me">About</a>
+            <a href="#contact" class="translate-me">Contact</a>
+            <button class="navButtonPriority translate-me" href="#pricing">
+              Pricing
+            </button>
+          </div>
+          <button class="languagebtn">
+            <img src="img/globe.svg" class="globe" alt="Language Icon" />
+            <span class="translate-me">Language</span>
+          </button>
+        </div>
+      </nav>
+
+      <main>
+        <section class="hero">
+          <div class="herocontent">
+            <div class="heroimage">
+              <img
+                src="img/woman.png"
+                alt="AI woman"
+                width="450"
+                height="450"
+                class="aiimage"
+              />
+              <img
+                src="img/neurolingo.svg"
+                alt="Neurolingo"
+                width="550"
+                height="100"
+                class="neurolingo"
+              />
+            </div>
+            <h2 class="text-object translate-me">
+              Empower your global reach with our AI-driven language switch!
+            </h2>
+            <p class="text-object translate-me">
+              Seamlessly translate and localise your website's content for any
+              audience, enhancing accessibility and user engagement worldwide.
+            </p>
+          </div>
+        </section>
+
+        <section class="features">
+          <div class="featurecard">
+            <div class="featureIconRound">
+              <img
+                src="img/megaphone.svg"
+                alt="megaphone"
+                width="23"
+                height="23"
+                class="featureicon"
+              />
+            </div>
+            <h3 class="text-object translate-me">
+              Effortless Global Translation for Every Audience!
+            </h3>
+            <p class="text-object translate-me">
+              We enable smooth, AI-powered translation of your website's
+              content, making it accessible to audiences worldwide. Connect
+              seamlessly with diverse users, allowing your message to resonate
+              across languages and cultures.
+            </p>
+          </div>
+
+          <div class="featurecard">
+            <div class="featureIconRound">
+              <img
+                src="img/house.svg"
+                alt="house"
+                width="25"
+                height="25"
+                class="featureicon"
+              />
+            </div>
+            <h3 class="text-object translate-me">
+              Tailored Experiences for Enhanced Accessibility
+            </h3>
+            <p class="text-object translate-me">
+              Our advanced localisation adapts your website's content to align
+              with the cultural nuances of each language. We ensure that every
+              visitor feels at home, creating an intuitive and inclusive
+              experience no matter their location.
+            </p>
+          </div>
+
+          <div class="featurecard">
+            <div class="featureIconRound">
+              <img
+                src="img/handshake.svg"
+                alt="handshake"
+                width="25"
+                height="25"
+                class="featureicon"
+              />
+            </div>
+            <h3 class="text-object translate-me">
+              Increase Engagement with Accurate Translations
+            </h3>
+            <p class="text-object translate-me">
+              Our precise translations enhance user interaction by adapting to
+              each language's unique context. Capture and retain global
+              audiences with content that feels native, leading to greater
+              satisfaction and loyalty across all markets.
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
+    <!--------------------- Pop-up --------------------->
+    <div class="popUp-overlay" id="popUpOverlay" style="display: none">
+      <div class="popUp">
+        <div class="logo-search">
+          <img
+            src="img/logo.svg"
+            alt="Neurolingo Logo"
+            width="150"
+            height="150"
+          />
+        </div>
+        <h2 class="change-language-popUp">Change Language</h2>
+
+        <div class="search-engelsk">
+          <form
+            id="languageForm"
+            class="toggles-text-round"
+            onsubmit="changeLanguage(event)"
+          >
+            <div class="element-style">
+              <div class="rectangle">
+                <input
+                  type="text"
+                  id="userInput"
+                  placeholder="Write and search your language..."
+                  class="input-field translate-me"
+                />
+              </div>
+            </div>
+
+            <div class="group">
+              <button type="submit" class="text-wrapper translate-me">
+                change
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="intro">
+          <h3 class="text-object translate-me intro-header">
+            Enter the language you want on this site
+          </h3>
+          <p class="text-object translate-me intro-text">
+            We use AI technology to translate your text accurately and naturally
+            into your desired language.
+          </p>
+        </div>
+        <button class="close-button" id="closeModal">
+          <img src="img/X.svg" width="15" height="15" alt="exit Icon" />
+        </button>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
