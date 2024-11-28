@@ -30,13 +30,6 @@ async function changeLanguage(event) {
     const input = document.getElementById('userInput');
     const newLanguage = input.value;
 
-    // Vis loader
-    document.querySelector('.loader-overlay').style.display = 'flex';
-
-    // Reset progress bar
-    const progressBar = document.querySelector('.progress-bar');
-    progressBar.style.width = '0%';
-
     try {
         const formData = new FormData();
         formData.append('message', newLanguage);
@@ -53,10 +46,6 @@ async function changeLanguage(event) {
         const data = await response.json();
         language = newLanguage;
 
-        // Beregn hvor meget hver oversættelse udgør af den totale progress
-        const progressIncrement = 100 / translatableElements.length;
-        let currentProgress = 0;
-
         // Translate and update elements one by one
         for (const item of translatableElements) {
             const translatedText = await translateTextRequest(item.originalText, newLanguage);
@@ -66,20 +55,11 @@ async function changeLanguage(event) {
             } else {
                 item.element.textContent = translatedText;
             }
-
-            // Opdater progress
-            currentProgress += progressIncrement;
-            progressBar.style.width = `${currentProgress}%`;
         }
 
     } catch (error) {
         console.error('Language change error:', error);
         document.querySelector('.text-object').textContent = 'Error: ' + error.message;
-    } finally {
-        // Skjul loader når vi er færdige (uanset om der var en fejl eller ej)
-        setTimeout(() => {
-            document.querySelector('.loader-overlay').style.display = 'none';
-        }, 500); // Lille forsinkelse så man kan se 100%
     }
 
     // Reset
