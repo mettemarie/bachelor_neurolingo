@@ -5,8 +5,6 @@ const url = "https://chatgpt.kupper.dk/";
 const api_key = "Din egen API key til OpenAI";
 const auth_key = "12tre_hokuspokus";
 
-// Assign language
-let language = "Danish";
 
 const translatableElements = findTranslatableElements();
 
@@ -103,7 +101,6 @@ async function translateTextRequest(text, targetLanguage) {
         });
 
         const data = await response.json();
-        console.log('Translation response:', data);
         return data.message || text;
     } catch (error) {
         console.error('Translation error:', error);

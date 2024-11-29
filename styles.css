@@ -1,8 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap");
 
 :root {
-  --primary-color: #00f7ff;
-  --secondary-color: #0066ff;
   --background-color: #2a2a2c;
   --text-color: #9eb6b9;
   --card-background: #2c2f33;
@@ -218,7 +216,7 @@ body {
   background-color: var(--text-color);
   transition: 0.3s;
 }
-/* -------------------------Modal------------------------- */
+/* -------------------------Pop-up------------------------- */
 
 .popUp-overlay {
   position: fixed;
@@ -261,7 +259,6 @@ body {
   color: transparent;
 }
 
-/* Main container for the search form */
 .search-engelsk {
   height: 50px;
   width: 100%;
@@ -286,7 +283,6 @@ body {
   position: relative;
 }
 
-/* Inner container for the input field */
 .element-style {
   flex: 1;
   padding-left: 10px;
@@ -305,7 +301,6 @@ body {
   padding-left: 15px;
 }
 
-/* Input field styling */
 .input-field {
   flex: 1;
   border: none;
@@ -372,41 +367,7 @@ body {
   cursor: pointer;
 }
 
-/* --------Responsive-------- */
-
-/* @media (max-width: 768px) {
-  .menubtn {
-    display: flex;
-  }
-
-  .navlinks {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    background: rgba(26, 26, 26, 0.95);
-    padding: 2rem;
-  }
-
-  .navlinks.active {
-    display: flex;
-  }
-
-  .hero {
-    padding-top: 6rem;
-  }
-
-  .glowtext {
-    font-size: 2.5rem;
-  }
-
-  .aiimage {
-    width: 300px;
-    height: 300px;
-  }
-} */
+/* ------------------Loader------------------ */
 
 .loader-overlay {
   position: fixed;
