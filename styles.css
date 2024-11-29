@@ -1,3 +1,4 @@
+/* ==================== IMPORTS OG VARIABLER ==================== */
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap");
 
 :root {
@@ -5,8 +6,15 @@
   --text-color: #9eb6b9;
   --card-background: #2c2f33;
   --grey: #2a2a2c;
+  --gradient-primary: linear-gradient(
+    180deg,
+    rgba(143, 231, 234, 1) 21%,
+    rgba(96, 222, 227, 1) 33%,
+    rgba(83, 130, 178, 1) 100%
+  );
 }
 
+/* ==================== GRUNDLÆGGENDE STYLING ==================== */
 body {
   font-family: "Roboto", sans-serif;
   background-color: var(--grey);
@@ -18,6 +26,8 @@ body {
 .app {
   min-height: 100vh;
 }
+
+/* ==================== NAVIGATION ==================== */
 
 .navbar {
   display: flex;
@@ -69,12 +79,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(
-    180deg,
-    rgba(143, 231, 234, 1) 21%,
-    rgba(96, 222, 227, 1) 33%,
-    rgba(83, 130, 178, 1) 100%
-  );
+  background: var(--gradient-primary);
   max-height: 35px;
   border: none;
   padding: 0.5rem 1rem;
@@ -95,6 +100,8 @@ body {
   height: 20px;
   width: auto;
 }
+
+/* ==================== HERO SEKTION ==================== */
 
 .hero {
   padding: 0rem 2rem 4rem;
@@ -144,6 +151,8 @@ body {
   margin-top: -100px;
   z-index: 4;
 }
+
+/* ==================== FEATURES SEKTION ==================== */
 
 .features {
   display: grid;
@@ -199,24 +208,7 @@ body {
   font-family: "Roboto", sans-serif;
 }
 
-.menubtn {
-  display: none;
-  flex-direction: column;
-  gap: 6px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 5px;
-}
-
-.menubtn span {
-  display: block;
-  width: 25px;
-  height: 2px;
-  background-color: var(--text-color);
-  transition: 0.3s;
-}
-/* -------------------------Pop-up------------------------- */
+/*==================== POPUP STYLING ==================== */
 
 .popUp-overlay {
   position: fixed;
@@ -367,7 +359,7 @@ body {
   cursor: pointer;
 }
 
-/* ------------------Loader------------------ */
+/*==================== LOADER STYLING ==================== */
 
 .loader-overlay {
   position: fixed;
@@ -415,12 +407,7 @@ body {
 .progress-bar {
   height: 100%;
   width: 0%;
-  background: linear-gradient(
-    180deg,
-    rgba(143, 231, 234, 1) 21%,
-    rgba(96, 222, 227, 1) 33%,
-    rgba(83, 130, 178, 1) 100%
-  );
+  background: var(--gradient-primary);
   border-radius: 5px;
   transition: width 0.5s ease-out;
 }
