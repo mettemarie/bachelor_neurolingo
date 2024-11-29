@@ -1,141 +1,165 @@
-// Domain for API
+// ===== KONSTANTER OG KONFIGURATION =====
 const url = "https://chatgpt.kupper.dk/";
-
-// OpenAI API key and Authentication
 const api_key = "Din egen API key til OpenAI";
 const auth_key = "12tre_hokuspokus";
 
+// ===== OVERSÆTTELSES FUNKTIONALITET =====
+class TranslationManager {
+    constructor() {
+        this.translatableElements = this.findTranslatableElements();
+    }
 
-const translatableElements = findTranslatableElements();
-
-
-function findTranslatableElements() {
-    const translateElements = document.querySelectorAll('.translate-me');
-    const elementsList = Array.from(translateElements).map(element => {
-        return {
+    findTranslatableElements() {
+        const translateElements = document.querySelectorAll('.translate-me');
+        return Array.from(translateElements).map(element => ({
             element: element,
             originalText: element.tagName === 'INPUT' ? element.placeholder : element.textContent.trim(),
             translatedText: "",
             isPlaceholder: element.tagName === 'INPUT'
-        };
-    });
-    return elementsList;
+        }));
+    }
+
+    async translateTextRequest(text, targetLanguage) {
+        try {
+            const formData = new FormData();
+            formData.append('message', text);
+            formData.append('language', targetLanguage);
+            formData.append('api_key', api_key);
+
+            const response = await fetch(`${url}api/translate/`, {
+                method: 'POST',
+                headers: { 'Authorization': auth_key },
+                body: formData
+            });
+
+            const data = await response.json();
+            return data.message || text;
+        } catch (error) {
+            console.error('Translation error:', error);
+            return text;
+        }
+    }
 }
 
+// ===== LOADER FUNKTIONALITET =====
+class LoaderManager {
+    constructor() {
+        this.loader = document.querySelector('.loader-overlay');
+        this.progressBar = document.querySelector('.progress-bar');
+    }
 
-async function changeLanguage(event) {
-    event.preventDefault();
-    const input = document.getElementById('userInput');
-    const newLanguage = input.value;
+    show() {
+        this.loader.style.display = 'flex';
+        this.resetProgress();
+    }
 
-    // Vis loader
-    document.querySelector('.loader-overlay').style.display = 'flex';
+    hide() {
+        setTimeout(() => {
+            this.loader.style.display = 'none';
+        }, 500);
+    }
 
-    // Reset progress bar
-    const progressBar = document.querySelector('.progress-bar');
-    progressBar.style.width = '0%';
+    resetProgress() {
+        this.progressBar.style.width = '0%';
+    }
 
-    try {
-        const formData = new FormData();
-        formData.append('message', newLanguage);
-        formData.append('api_key', api_key);
+    updateProgress(percentage) {
+        this.progressBar.style.width = `${percentage}%`;
+    }
+}
 
-        const response = await fetch(`${url}api/language/`, {
-            method: 'POST',
-            headers: {
-                'Authorization': auth_key
-            },
-            body: formData
+// ===== POPUP FUNKTIONALITET =====
+class PopupManager {
+    constructor() {
+        this.overlay = document.getElementById('popUpOverlay');
+        this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+        const closeBtn = document.getElementById('closeModal');
+        const languageBtn = document.querySelector('.languagebtn');
+
+        languageBtn.addEventListener('click', () => this.show());
+        closeBtn.addEventListener('click', () => this.hide());
+        this.overlay.addEventListener('click', (e) => {
+            if (e.target === this.overlay) this.hide();
         });
+    }
 
-        const data = await response.json();
-        language = newLanguage;
+    show() {
+        this.overlay.style.display = 'flex';
+    }
 
-        // Beregn hvor meget hver oversættelse udgør af den totale progress
-        const progressIncrement = 100 / translatableElements.length;
-        let currentProgress = 0;
+    hide() {
+        this.overlay.style.display = 'none';
+    }
+}
 
-        // Translate and update elements one by one
-        for (const item of translatableElements) {
-            const translatedText = await translateTextRequest(item.originalText, newLanguage);
-            item.translatedText = translatedText;
-            if (item.isPlaceholder) {
-                item.element.placeholder = translatedText;
-            } else {
-                item.element.textContent = translatedText;
+// ===== HOVEDFUNKTIONALITET =====
+class LanguageChanger {
+    constructor() {
+        this.translator = new TranslationManager();
+        this.loader = new LoaderManager();
+        this.popup = new PopupManager();
+        this.setupFormListener();
+    }
+
+    setupFormListener() {
+        const form = document.getElementById('languageForm');
+        form.addEventListener('submit', (e) => this.handleLanguageChange(e));
+    }
+
+    async handleLanguageChange(event) {
+        event.preventDefault();
+        const input = document.getElementById('userInput');
+        const newLanguage = input.value;
+
+        this.loader.show();
+
+        try {
+            // Verificer sprog via API
+            const formData = new FormData();
+            formData.append('message', newLanguage);
+            formData.append('api_key', api_key);
+
+            await fetch(`${url}api/language/`, {
+                method: 'POST',
+                headers: { 'Authorization': auth_key },
+                body: formData
+            });
+
+            // Oversæt alle elementer
+            const progressIncrement = 100 / this.translator.translatableElements.length;
+            let currentProgress = 0;
+
+            for (const item of this.translator.translatableElements) {
+                const translatedText = await this.translator.translateTextRequest(
+                    item.originalText,
+                    newLanguage
+                );
+
+                if (item.isPlaceholder) {
+                    item.element.placeholder = translatedText;
+                } else {
+                    item.element.textContent = translatedText;
+                }
+
+                currentProgress += progressIncrement;
+                this.loader.updateProgress(currentProgress);
             }
 
-            // Opdater progress
-            currentProgress += progressIncrement;
-            progressBar.style.width = `${currentProgress}%`;
+        } catch (error) {
+            console.error('Language change error:', error);
+        } finally {
+            this.loader.hide();
+            this.popup.hide();
+            input.value = '';
         }
-
-    } catch (error) {
-        console.error('Language change error:', error);
-        document.querySelector('.text-object').textContent = 'Error: ' + error.message;
-    } finally {
-        // Skjul loader når vi er færdige (uanset om der var en fejl eller ej)
-        setTimeout(() => {
-            document.querySelector('.loader-overlay').style.display = 'none';
-        }, 500); // Lille forsinkelse så man kan se 100%
-    }
-
-    // Reset
-    input.value = '';
-}
-
-
-async function translateTextRequest(text, targetLanguage) {
-    try {
-        const formData = new FormData();
-        formData.append('message', text);
-        formData.append('language', targetLanguage);
-        formData.append('api_key', api_key);
-
-        const response = await fetch(`${url}api/translate/`, {
-            method: 'POST',
-            headers: {
-                'Authorization': auth_key
-            },
-            body: formData
-        });
-
-        const data = await response.json();
-        return data.message || text;
-    } catch (error) {
-        console.error('Translation error:', error);
-        return text;
     }
 }
 
-// Pop-up functionality
-document.addEventListener('DOMContentLoaded', function () {
-    const popUpOverlay = document.getElementById('popUpOverlay');
-    const closePopUp = document.getElementById('closeModal');
-    const languageBtn = document.querySelector('.languagebtn');
-    const languageForm = document.getElementById('languageForm');
-
-    // Vis popUp når der klikkes på language knappen
-    languageBtn.addEventListener('click', function () {
-        popUpOverlay.style.display = 'flex';
-    });
-
-    // Luk popUp når der klikkes på luk-knappen
-    closePopUp.addEventListener('click', function () {
-        popUpOverlay.style.display = 'none';
-    });
-
-    // Luk popUp når der klikkes udenfor popUppen
-    popUpOverlay.addEventListener('click', function (e) {
-        if (e.target === popUpOverlay) {
-            popUpOverlay.style.display = 'none';
-        }
-    });
-
-    // Håndter form submission
-    languageForm.addEventListener('submit', function (e) {
-        changeLanguage(e);
-        popUpOverlay.style.display = 'none';
-    });
+// ===== INITIALISERING =====
+document.addEventListener('DOMContentLoaded', () => {
+    new LanguageChanger();
 });
 
