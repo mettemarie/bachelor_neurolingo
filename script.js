@@ -1,7 +1,7 @@
 // ===== KONSTANTER OG KONFIGURATION =====
 const url = "https://chatgpt.kupper.dk/";
 const api_key = "Din egen API key til OpenAI";
-const auth_key = "12tre_hokuspokus";
+const auth_key = "Auth key";
 
 // ===== OVERSÆTTELSES FUNKTIONALITET =====
 class TranslationManager {
